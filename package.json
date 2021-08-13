@@ -59,6 +59,7 @@
    "dependencies": {
       "command-line-args": "5.2.0",
       "command-line-usage": "6.1.1",
+      "replace-in-file": "6.2.0",
       "tslib": "1.9.3"
    },
    "config": {
