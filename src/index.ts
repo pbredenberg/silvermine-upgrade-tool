@@ -15,6 +15,11 @@ const runCli = (): void => {
          alias: 'u',
          type: Boolean,
       },
+      {
+         name: 'commit',
+         alias: 'c',
+         type: Boolean,
+      },
    ];
 
    const options = commandLineArgs(optionDefinitions);
@@ -22,7 +27,7 @@ const runCli = (): void => {
    if (options.help) {
       help(optionDefinitions);
    } else if (options.upgrade) {
-      upgrade();
+      upgrade(options.commit);
    }
 };
 
