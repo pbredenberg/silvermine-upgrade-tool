@@ -31,6 +31,19 @@ const commit = async (customMessage: string | null = null): Promise<void> => {
       throw new Error('Error staging files');
    }
 
+   try {
+      const stagedFilesCommand = await exec('git diff --cached --numstat | wc -l'),
+            stagedFileCount = parseInt(stagedFilesCommand.stdout, 10);
+
+      if (!stagedFileCount && stagedFileCount <= 0) {
+         console.error('No staged files to commit! Exiting.');
+         return;
+      }
+   } catch(e) {
+      console.error(e);
+      throw new Error('Could not get count of staged files.');
+   }
+
    console.log('Committing files:', fileNamesUnique);
 
    try {
