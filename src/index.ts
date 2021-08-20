@@ -1,30 +1,35 @@
 #!/usr/bin/env node
-import commandLineArgs, { OptionDefinition } from 'command-line-args';
+import commandLineArgs from 'command-line-args';
+import { OptionDefinitionWithDescription } from './interfaces';
 import commit from './options/commit';
 import help from './options/help';
 import upgrade from './options/upgrade';
 
 const runCli = async (): Promise<void> => {
-   const optionDefinitions: OptionDefinition[] = [
+   const optionDefinitions: OptionDefinitionWithDescription[] = [
       {
          name: 'help',
          alias: 'h',
          type: Boolean,
+         description: 'Oh, you need help?',
       },
       {
          name: 'upgrade',
          alias: 'u',
          type: Boolean,
+         description: 'Runs configured file replacements and `npm ci`',
       },
       {
          name: 'commit',
          alias: 'c',
          type: Boolean,
+         description: 'Stages and commits modified files with a default commit message',
       },
       {
          name: 'message',
          alias: 'm',
          type: String,
+         description: 'Optional message for use with `--commit` to override the default commit message',
       },
    ];
 
@@ -34,7 +39,7 @@ const runCli = async (): Promise<void> => {
       await upgrade();
    } else if (options.commit) {
       await commit(options.message || null);
-   } else if (options.help || !options) {
+   } else if (options.help || Object.keys(options).length <= 0) {
       help(optionDefinitions);
    }
 };
