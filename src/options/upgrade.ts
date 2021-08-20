@@ -1,36 +1,13 @@
 import { replaceInFile, ReplaceInFileConfig } from 'replace-in-file';
 import util from 'util';
 import childProcess from 'child_process';
+import { REPLACEMENT_TARGET_FILE_CONFIGS } from '../constants';
 
-const upgrade = async (shouldCommit = false): Promise<void> => {
+const upgrade = async (): Promise<void> => {
    const exec = util.promisify(childProcess.exec),
-         cwd = process.cwd(),
-         currentNodeVersion = '12.14.0',
-         currentNPMVersion = '6.13.4',
-         targetNodeVersion = '12.22.1',
-         targetNPMVersion = '6.14.12';
+         cwd = process.cwd();
 
-   let configs: ReplaceInFileConfig[];
-
-   configs = [
-      {
-         files: [ 'package.json' ],
-         from: new RegExp(`--npm ${currentNPMVersion}`, 'g'),
-         to: `--npm ${targetNPMVersion}`,
-      },
-      {
-         files: [ 'package.json' ],
-         from: new RegExp(`--node ${currentNodeVersion}`, 'g'),
-         to: `--node ${targetNodeVersion}`,
-      },
-      {
-         files: [ '.nvmrc' ],
-         from: new RegExp(`${currentNodeVersion}`, 'g'),
-         to: targetNodeVersion,
-      },
-   ];
-
-   await Promise.all(configs.map(async (config) => {
+   await Promise.all(REPLACEMENT_TARGET_FILE_CONFIGS.map(async (config) => {
       const filesToSearch = config.files as string[];
 
       let options: ReplaceInFileConfig;
@@ -43,31 +20,28 @@ const upgrade = async (shouldCommit = false): Promise<void> => {
          to: config.to,
       };
 
-      await replaceInFile(options);
+      (options.files as string[])
+         .forEach((file) => {
+            console.log(`Processing ${file}`);
+            console.log(`Replacing: '${options.from}' => ${options.to}`);
+         });
 
       try {
-         await exec('npm ci');
+         await replaceInFile(options);
       } catch(e) {
-         console.error('Error running `npm ci`:', e);
-      }
-
-      if (shouldCommit) {
-
-         try {
-            await exec(`git add ${filesToSearch.join(' ')}`);
-         } catch(e) {
-            console.error('Error staging files:', e);
-         }
-
-         try {
-            await exec(
-               `git commit -m "chore: upgrade Node to ${targetNodeVersion} and NPM to ${targetNPMVersion}"`
-            );
-         } catch(e) {
-            console.error('Error creating commit:', e);
-         }
+         console.error(e);
+         throw new Error('Error running file replacements');
       }
    }));
+
+   console.log('Running `npm ci`...');
+
+   try {
+      await exec('npm ci');
+   } catch(e) {
+      console.error(e);
+      throw new Error('Error running `npm ci`');
+   }
 };
 
 export default upgrade;
