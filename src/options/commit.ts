@@ -1,15 +1,12 @@
-import util from 'util';
-import childProcess from 'child_process';
 import _ from 'underscore';
 import {
    NODE_NPM_UPGRADE_COMMIT_MESSAGE,
    REPLACEMENT_TARGET_FILE_CONFIGS,
    REPLACEMENT_TARGET_FILE_ADDITIONAL_FILES,
 } from '../constants';
+import { executeCommand } from '../utilities/execute-command';
 
 const commit = async (customMessage: string | null = null): Promise<void> => {
-   const exec = util.promisify(childProcess.exec);
-
    const fileNames = REPLACEMENT_TARGET_FILE_CONFIGS
       .map((file) => {
          return _.uniq((file.files as string[])).join('');
@@ -25,14 +22,14 @@ const commit = async (customMessage: string | null = null): Promise<void> => {
    console.log('Staging files:', fileNamesUnique);
 
    try {
-      await exec(`git add ${fileNamesUnique}`);
+      await executeCommand(`git add ${fileNamesUnique}`);
    } catch(e) {
       console.error(e);
       throw new Error('Error staging files');
    }
 
    try {
-      const stagedFilesCommand = await exec('git diff --cached --numstat | wc -l'),
+      const stagedFilesCommand = await executeCommand('git diff --cached --numstat | wc -l'),
             stagedFileCount = parseInt(stagedFilesCommand.stdout, 10);
 
       if (!stagedFileCount && stagedFileCount <= 0) {
@@ -47,7 +44,7 @@ const commit = async (customMessage: string | null = null): Promise<void> => {
    console.log('Committing files:', fileNamesUnique);
 
    try {
-      await exec(customMessage || NODE_NPM_UPGRADE_COMMIT_MESSAGE);
+      await executeCommand(customMessage || NODE_NPM_UPGRADE_COMMIT_MESSAGE);
    } catch(e) {
       console.error('Error creating commit:', e);
    }

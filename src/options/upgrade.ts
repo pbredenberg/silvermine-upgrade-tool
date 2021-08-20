@@ -1,11 +1,9 @@
 import { replaceInFile, ReplaceInFileConfig } from 'replace-in-file';
-import util from 'util';
-import childProcess from 'child_process';
 import { REPLACEMENT_TARGET_FILE_CONFIGS } from '../constants';
+import { executeCommand } from '../utilities/execute-command';
 
 const upgrade = async (): Promise<void> => {
-   const exec = util.promisify(childProcess.exec),
-         cwd = process.cwd();
+   const cwd = process.cwd();
 
    await Promise.all(REPLACEMENT_TARGET_FILE_CONFIGS.map(async (config) => {
       const filesToSearch = config.files as string[];
@@ -37,7 +35,7 @@ const upgrade = async (): Promise<void> => {
    console.log('Running `npm ci`...');
 
    try {
-      await exec('npm ci');
+      await executeCommand('npm ci');
    } catch(e) {
       console.error(e);
       throw new Error('Error running `npm ci`');
