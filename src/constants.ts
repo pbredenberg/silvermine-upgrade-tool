@@ -55,3 +55,12 @@ export const REPLACEMENT_TARGET_FILE_CONFIGS: ReplaceInFileConfig[] = [
 ];
 
 export const REPLACEMENT_TARGET_FILE_ADDITIONAL_FILES = [ 'package-lock.json' ];
+
+export const NPM_PACKAGES_TO_REMOVE = [
+   '@commitlint/cli',
+   '@commitlint/travis-cli',
+   'check-node-version',
+   'grunt-markdownlint',
+   'grunt-sass-lint',
+   'markdownlint',
+];
