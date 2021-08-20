@@ -5,6 +5,8 @@ import commit from './options/commit';
 import help from './options/help';
 import upgrade from './options/upgrade';
 import installStandardization from './options/install-standardization';
+import configureMarkdownlint from './options/configure-markdownlint';
+import configureCommitlint from './options/configure-commitlint';
 
 const runCli = async (): Promise<void> => {
    const optionDefinitions: OptionDefinitionWithDescription[] = [
@@ -38,6 +40,16 @@ const runCli = async (): Promise<void> => {
          type: Boolean,
          description: 'Installs @silvermine/standardization, and removes packages included with the library',
       },
+      {
+         name: 'markdownlint',
+         type: Boolean,
+         description: 'Installs a markdownlint configuration file',
+      },
+      {
+         name: 'commitlint',
+         type: Boolean,
+         description: 'Installs a commitlint configuration file',
+      },
    ];
 
    const options = commandLineArgs(optionDefinitions);
@@ -48,6 +60,10 @@ const runCli = async (): Promise<void> => {
       await commit(options.message || null);
    } else if (options.standardize) {
       await installStandardization();
+   } else if (options.markdownlint) {
+      await configureMarkdownlint();
+   } else if (options.commitlint) {
+      await configureCommitlint();
    } else if (options.help || Object.keys(options).length <= 0) {
       help(optionDefinitions);
    }
