@@ -25,12 +25,18 @@ export const PREVIOUS_NPM_VERSIONS = [ '6.13.4' ];
  * version control.
  */
 export const NODE_NPM_UPGRADE_COMMIT_MESSAGE = [
-   'git commit -m "chore: upgrade Node to',
+   'chore: upgrade Node to',
    `${CURRENT_NODE_VERSION}`,
    'and NPM to',
-   `${CURRENT_NPM_VERSION}"`,
+   `${CURRENT_NPM_VERSION}`,
 ]
    .join(' ');
+
+/**
+ * The commit message to use when adding @silvermine/standardization.
+ */
+export const ADD_STANDARDIZATION_COMMIT_MESSAGE =
+   'chore: add @silvermine/standardization and configuration';
 
 export const NODE_VERSION_REGEX_MATCH_STRING = `(${PREVIOUS_NODE_VERSIONS.join('|')})`;
 
@@ -59,6 +65,7 @@ export const REPLACEMENT_TARGET_FILE_ADDITIONAL_FILES = [ 'package-lock.json' ];
 export const NPM_PACKAGES_TO_REMOVE = [
    '@commitlint/cli',
    '@commitlint/travis-cli',
+   '@silvermine/sass-lint-config',
    'check-node-version',
    'grunt-markdownlint',
    'grunt-sass-lint',

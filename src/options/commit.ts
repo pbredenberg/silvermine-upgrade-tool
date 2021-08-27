@@ -1,17 +1,21 @@
 import _ from 'underscore';
 import {
-   NODE_NPM_UPGRADE_COMMIT_MESSAGE,
    REPLACEMENT_TARGET_FILE_CONFIGS,
    REPLACEMENT_TARGET_FILE_ADDITIONAL_FILES,
 } from '../constants';
 import { executeCommand } from '../utilities/execute-command';
 
-const commit = async (customMessage: string | null = null): Promise<void> => {
+const commit = async (
+   commitMessage: string,
+   issueNumber: number | null = null
+): Promise<void> => {
    const fileNames = REPLACEMENT_TARGET_FILE_CONFIGS
       .map((file) => {
          return _.uniq((file.files as string[])).join('');
       })
       .concat(REPLACEMENT_TARGET_FILE_ADDITIONAL_FILES);
+
+   let commitMessageParts: string[];
 
    // Some files may have multiple replacement tasks configured for them,
    // so this ensures that the `add` command does not have the same file name
@@ -43,8 +47,20 @@ const commit = async (customMessage: string | null = null): Promise<void> => {
 
    console.log('Committing files:', fileNamesUnique);
 
+   commitMessageParts = [
+      commitMessage,
+      issueNumber,
+   ]
+      .map((messagePart) => {
+         return messagePart === null
+            ? ''
+            : `${typeof messagePart === 'number'
+               ? `(#${messagePart})`
+               : messagePart}`;
+      });
+
    try {
-      await executeCommand(customMessage || NODE_NPM_UPGRADE_COMMIT_MESSAGE);
+      await executeCommand(`git commit -m "${commitMessageParts.join(' ')}"`);
    } catch(e) {
       console.error('Error creating commit:', e);
    }
