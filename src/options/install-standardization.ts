@@ -1,5 +1,7 @@
+import path from 'path';
 import { NPM_PACKAGES_TO_REMOVE } from '../constants';
 import { executeCommand } from '../utilities/execute-command';
+import isFile from '../utilities/is-file';
 
 const installStandardization = async (): Promise<void> => {
    console.log('Removing unneeded packages...');
@@ -23,10 +25,17 @@ const installStandardization = async (): Promise<void> => {
    console.log('Symlinking .editorconfig...');
 
    try {
-      await executeCommand('ln -s ./node_modules/@silvermine/standardization/.editorconfig .editorconfig');
+      const editorConfigFileName = '.editorconfig',
+            cwd = process.cwd(),
+            targetFilePath = path.resolve(cwd, editorConfigFileName);
+
+      if (!isFile(targetFilePath)) {
+         await executeCommand(
+            `ln -s ./node_modules/@silvermine/standardization/${editorConfigFileName} ${targetFilePath}`
+         );
+      }
    } catch(error) {
-      console.error(error);
-      throw new Error('Error symlinking .editorconfig');
+      console.error('Error symlinking .editorconfig', error);
    }
 
    console.log('Removing old lockfile...');
