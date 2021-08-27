@@ -6,6 +6,7 @@ const configureMarkdownlint = async (): Promise<void> => {
    const cwd = process.cwd(),
          targetFilePath = path.resolve(cwd, '.markdownlint.json');
 
+   console.log('configuring .markdownlint.json ...');
 
    await writeFile(
       targetFilePath,
@@ -13,7 +14,7 @@ const configureMarkdownlint = async (): Promise<void> => {
       await getFileContents(path.resolve(__dirname, '..', '..', 'templates/markdownlint.json.tpl'))
    );
 
-   console.log('.markdownlint.json added, you may need to manually configure your build tools.');
+   console.log('.markdownlint.json configured, you may need to manually configure your build tools.');
 };
 
 export default configureMarkdownlint;
