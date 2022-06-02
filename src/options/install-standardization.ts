@@ -16,7 +16,7 @@ const installStandardization = async (): Promise<void> => {
    console.log('Installing @silvermine/standardization...');
 
    try {
-      await executeCommand('npm i -DE @silvermine/standardization');
+      await executeCommand('npm i -DE @silvermine/standardization@latest');
    } catch(error) {
       console.error(error);
       throw new Error('Error installing standarization');
