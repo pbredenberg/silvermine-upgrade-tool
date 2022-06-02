@@ -10,7 +10,7 @@
    },
    "scripts": {
       "prepare": "grunt build",
-      "test": "check-node-version --npm 6.13.4 && TS_NODE_PROJECT='tests/tsconfig.json' TS_NODE_FILES=true nyc mocha --opts ./.mocha.opts",
+      "test": "check-node-version --npm 8.5.5 && TS_NODE_PROJECT='tests/tsconfig.json' TS_NODE_FILES=true nyc mocha --opts ./.mocha.opts",
       "test:ci": "npm test -- --forbid-only"
    },
    "author": "Paul Bredenberg",
@@ -29,6 +29,7 @@
       "@commitlint/travis-cli": "8.3.5",
       "@silvermine/chai-strictly-equal": "1.1.0",
       "@silvermine/eslint-config": "3.0.1",
+      "@silvermine/standardization": "2.0.0",
       "@silvermine/typescript-config": "0.10.0",
       "@types/chai": "4.1.7",
       "@types/command-line-args": "5.2.0",
