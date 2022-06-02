@@ -69,5 +69,6 @@ export const NPM_PACKAGES_TO_REMOVE = [
    'check-node-version',
    'grunt-markdownlint',
    'grunt-sass-lint',
+   'grunt-eslint',
    'markdownlint',
 ];

@@ -2,7 +2,7 @@ import fs from 'fs';
 import isFile from './is-file';
 
 /**
- * Writes the the provided contents to the file at the provided path.
+ * Writes the provided contents to the file at the provided path.
  * @param filePath - An _absolute_ path to the file
  * @param fileContents - A string representation of the content of the file
  */
