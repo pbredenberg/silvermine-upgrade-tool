@@ -10,7 +10,13 @@
 
 ## What?
 
+File templates and utilities to help maintain projects for Silvermine.
+
 ## Why?
+
+Since most of our projects contain configuration that is virtually identical, we can standardize upgrades
+of these projects by providing utility scripts and file templates that make it less manual and cumbersome
+to upgrade common software versions.
 
 ## License
 
