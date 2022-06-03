@@ -58,6 +58,11 @@ export const REPLACEMENT_TARGET_FILE_CONFIGS: ReplaceInFileConfig[] = [
       from: new RegExp(`${NODE_VERSION_REGEX_MATCH_STRING}`, 'g'),
       to: CURRENT_NODE_VERSION,
    },
+   {
+      files: [ '.travis.yml' ],
+      from: new RegExp(`${NPM_VERSION_REGEX_MATCH_STRING}`, 'g'),
+      to: CURRENT_NPM_VERSION,
+   },
 ];
 
 export const REPLACEMENT_TARGET_FILE_ADDITIONAL_FILES = [ 'package-lock.json' ];
