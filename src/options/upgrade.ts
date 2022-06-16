@@ -1,6 +1,5 @@
 import { replaceInFile, ReplaceInFileConfig } from 'replace-in-file';
 import { REPLACEMENT_TARGET_FILE_CONFIGS } from '../constants';
-import { executeCommand } from '../utilities/execute-command';
 import fs from 'fs';
 import { promisify } from 'util';
 import path from 'path';
@@ -40,18 +39,10 @@ const upgrade = async (): Promise<void> => {
 
    try{
       await rm(path.resolve(process.cwd(), 'package-lock.json'));
-      console.log('package-lock.json removed')
+      console.log('package-lock.json removed.');
+      console.log('Please run `npm install` and amend the previous commit with the result.');
    } catch (e) {
       console.error('Could not remove package-lock.json:', e);
-   }
-
-   console.log('Running `npm i`...');
-
-   try {
-      await executeCommand('npm i');
-   } catch(e) {
-      console.error(e);
-      throw new Error('Error running `npm i`');
    }
 };
 
