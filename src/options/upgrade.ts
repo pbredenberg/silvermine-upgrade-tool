@@ -12,7 +12,7 @@ const upgrade = async (): Promise<void> => {
       const filePaths = (config.files as string[]).map(file => `${process.cwd()}/${file}`)
 
       const filesAtPaths = await getFilesAtPaths(filePaths);
-      
+
       let options: ReplaceInFileConfig;
 
       options = {
@@ -38,7 +38,7 @@ const upgrade = async (): Promise<void> => {
    try{
       await rm(path.resolve(process.cwd(), 'package-lock.json'));
       console.log('package-lock.json removed.');
-      console.log('Please run `npm install` and amend the previous commit with the result.');
+      console.log('Please run `nvm use && npm install`.');
    } catch (e) {
       console.error('Could not remove package-lock.json:', e);
    }

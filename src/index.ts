@@ -1,13 +1,11 @@
 #!/usr/bin/env node
 import commandLineArgs from 'command-line-args';
 import { OptionDefinitionWithDescription } from './interfaces';
-import commit from './options/commit';
 import help from './options/help';
 import upgrade from './options/upgrade';
 import installStandardization from './options/install-standardization';
 import configureMarkdownlint from './options/configure-markdownlint';
 import configureCommitlint from './options/configure-commitlint';
-import { ADD_STANDARDIZATION_COMMIT_MESSAGE, NODE_NPM_UPGRADE_COMMIT_MESSAGE } from './constants';
 import configureGithubActions from "./options/configure-github-actions";
 
 const runCli = async (): Promise<void> => {
@@ -48,23 +46,10 @@ const runCli = async (): Promise<void> => {
          defaultValue: true,
       },
       {
-         name: 'commit',
-         alias: 'c',
-         type: Boolean,
-         description: 'Stages and commits modified files with a default commit message. For use with `--standardize` and `--upgrade`',
-         defaultValue: true,
-      },
-      {
          name: 'message',
          alias: 'm',
          type: String,
          description: 'Optional message for use with `--commit` to override the default commit message. For use with `--commit`',
-      },
-      {
-         name: 'issueNumber',
-         alias: 'i',
-         type: Number,
-         description: 'Optional issue tracker number to pass to the commit message. For use with `--commit`',
       },
    ];
 
@@ -72,30 +57,30 @@ const runCli = async (): Promise<void> => {
 
    if (options.upgrade) {
       await upgrade();
-      if (options.commit) {
-         await commit(NODE_NPM_UPGRADE_COMMIT_MESSAGE, options.issueNumber || null);
-      }
-   } else if (options.standardize) {
+   }
+
+   if (options.standardize) {
       await installStandardization();
+   }
 
-      if (options.markdownlint) {
-         await configureMarkdownlint();
-      }
+   if (options.markdownlint) {
+      await configureMarkdownlint();
+   }
 
-      if (options['github-actions']) {
-         await configureGithubActions();
-      }
+   if (options['github-actions']) {
+      await configureGithubActions();
+   }
 
-      if (options.commitlint) {
-         await configureCommitlint();
-      }
+   if (options.commitlint) {
+      await configureCommitlint();
+   }
 
-      if (options.commit) {
-         await commit(ADD_STANDARDIZATION_COMMIT_MESSAGE, options.issueNumber || null);
-      }
-   } else if (options.help || Object.keys(options).length <= 0) {
+   if (options.help || Object.keys(options).length <= 0) {
       help(optionDefinitions);
    }
 };
 
-runCli();
+(async () => {
+   await runCli();
+})()
+
