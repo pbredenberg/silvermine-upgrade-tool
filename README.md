@@ -18,6 +18,19 @@ Since most of our projects contain configuration that is virtually identical, we
 of these projects by providing utility scripts and file templates that make it less manual and cumbersome
 to upgrade common software versions.
 
+## Development Notes
+
+This tool is most useful when install globally, as it is designed to perform operations across
+multiples projects. When working on this tool, you can install the local development version
+globally as follows:
+
+`npm i -g .`
+
+When changes are made to the package, you may at times want to clean the globally installed
+development copy. Do so with:
+
+`npm unlink -g @silvermine/upgrade-tool`
+
 ## License
 
 This software is released under the MIT license. See [the license
