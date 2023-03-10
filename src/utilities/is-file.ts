@@ -13,7 +13,7 @@ const isFile = async (filePath: string): Promise<boolean> => {
    } catch(error) {
       console.log(`${filePath} not present.`);
    }
-   
+
    return !!result;
 };
 

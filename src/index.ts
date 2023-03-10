@@ -37,13 +37,11 @@ const runCli = async (): Promise<void> => {
          name: 'markdownlint',
          type: Boolean,
          description: 'Installs a markdownlint configuration file',
-         defaultValue: true,
       },
       {
          name: 'commitlint',
          type: Boolean,
          description: 'Installs a commitlint configuration file',
-         defaultValue: true,
       },
       {
          name: 'message',
