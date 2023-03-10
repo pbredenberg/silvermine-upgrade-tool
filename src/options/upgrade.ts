@@ -3,32 +3,30 @@ import { REPLACEMENT_TARGET_FILE_CONFIGS } from '../constants';
 import fs from 'fs';
 import { promisify } from 'util';
 import path from 'path';
+import {getFilesAtPaths} from "../utilities/get-files-at-paths";
 
 const upgrade = async (): Promise<void> => {
    const rm = promisify(fs.unlink);
-   const cwd = process.cwd();
 
    await Promise.all(REPLACEMENT_TARGET_FILE_CONFIGS.map(async (config) => {
-      const filesToSearch = config.files as string[];
+      const filePaths = (config.files as string[]).map(file => `${process.cwd()}/${file}`)
 
+      const filesAtPaths = await getFilesAtPaths(filePaths);
+      
       let options: ReplaceInFileConfig;
 
       options = {
-         files: (filesToSearch).map((file: string) => {
-            return `${cwd}/${file}`;
-         }),
+         files: filesAtPaths,
          from: config.from,
          to: config.to,
       };
 
-      (options.files as string[])
-         .forEach((file) => {
-            console.log(`Processing ${file}`);
-            console.log(`Replacing: '${options.from}' => ${options.to}`);
-         });
+      console.log(`Running replacement(s) for: ${filesAtPaths}`);
 
       try {
+         console.log(`Replacing: '${options.from}' => ${options.to}`);
          await replaceInFile(options);
+         console.log(`Replaced: '${options.from}' => ${options.to}`);
       } catch(e) {
          console.error(e);
          throw new Error('Error running file replacements');

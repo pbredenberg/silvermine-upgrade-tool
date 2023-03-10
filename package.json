@@ -41,7 +41,7 @@
       "@types/command-line-args": "5.2.0",
       "@types/command-line-usage": "5.0.2",
       "@types/mocha": "5.2.5",
-      "@types/node": "8.10.36",
+      "@types/node": "10.17.60",
       "@types/sinon": "5.0.5",
       "@types/underscore": "1.11.3",
       "chai": "4.2.0",

@@ -1,26 +1,31 @@
 import _ from 'underscore';
 import {
    REPLACEMENT_TARGET_FILE_CONFIGS,
-   REPLACEMENT_TARGET_FILE_ADDITIONAL_FILES,
+   GENERATED_PROJECT_FILES,
 } from '../constants';
 import { executeCommand } from '../utilities/execute-command';
+import {getFilesAtPaths} from "../utilities/get-files-at-paths";
 
 const commit = async (
    commitMessage: string,
    issueNumber: number | null = null
 ): Promise<void> => {
-   const fileNames = REPLACEMENT_TARGET_FILE_CONFIGS
-      .map((file) => {
-         return _.uniq((file.files as string[])).join('');
-      })
-      .concat(REPLACEMENT_TARGET_FILE_ADDITIONAL_FILES);
+   const cwd = process.cwd();
+
+   const verifiedFilePaths = await getFilesAtPaths(
+      _.flatten(REPLACEMENT_TARGET_FILE_CONFIGS.map(config => config.files))
+         .map(filePath => `${cwd}/${filePath}`)
+   );
+
+   const filePaths = verifiedFilePaths
+      .concat(GENERATED_PROJECT_FILES);
 
    let commitMessageParts: string[];
 
    // Some files may have multiple replacement tasks configured for them,
    // so this ensures that the `add` command does not have the same file name
-   // twice. Because that would be wrong, even though it doesn't really matter.
-   const fileNamesUnique = _.uniq(fileNames)
+   // twice. Because that would be wrong, as opposed to being right.
+   const fileNamesUnique = _.uniq(filePaths)
       .join(' ');
 
    console.log('Staging files:', fileNamesUnique);

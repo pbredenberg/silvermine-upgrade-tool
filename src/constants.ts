@@ -63,9 +63,19 @@ export const REPLACEMENT_TARGET_FILE_CONFIGS: ReplaceInFileConfig[] = [
       from: new RegExp(`${NPM_VERSION_REGEX_MATCH_STRING}`, 'g'),
       to: CURRENT_NPM_VERSION,
    },
+   {
+      files: [ '.travis.yml' ],
+      from: new RegExp('grunt standards', 'g'),
+      to: 'npm run standards',
+   },
+   {
+      files: [ '.gitlab-ci.yml' ],
+      from: new RegExp('grunt standards', 'g'),
+      to: 'npm run standards',
+   },
 ];
 
-export const REPLACEMENT_TARGET_FILE_ADDITIONAL_FILES = [ 'package-lock.json' ];
+export const GENERATED_PROJECT_FILES = [ 'package-lock.json' ];
 
 export const NPM_PACKAGES_TO_REMOVE = [
    '@commitlint/cli',

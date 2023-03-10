@@ -8,6 +8,7 @@ import installStandardization from './options/install-standardization';
 import configureMarkdownlint from './options/configure-markdownlint';
 import configureCommitlint from './options/configure-commitlint';
 import { ADD_STANDARDIZATION_COMMIT_MESSAGE, NODE_NPM_UPGRADE_COMMIT_MESSAGE } from './constants';
+import configureGithubActions from "./options/configure-github-actions";
 
 const runCli = async (): Promise<void> => {
    const optionDefinitions: OptionDefinitionWithDescription[] = [
@@ -28,6 +29,11 @@ const runCli = async (): Promise<void> => {
          alias: 's',
          type: Boolean,
          description: 'Installs @silvermine/standardization, and removes packages included with the library',
+      },
+      {
+         name: 'github-actions',
+         type: Boolean,
+         description: 'Installs our base github workflows config',
       },
       {
          name: 'markdownlint',
@@ -74,6 +80,10 @@ const runCli = async (): Promise<void> => {
 
       if (options.markdownlint) {
          await configureMarkdownlint();
+      }
+
+      if (options['github-actions']) {
+         await configureGithubActions();
       }
 
       if (options.commitlint) {
