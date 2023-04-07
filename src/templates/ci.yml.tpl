@@ -33,4 +33,6 @@ jobs:
                node-version: ${{ matrix.node-version }}
          - run: npm i -g npm@8.5.5
          - run: npm ci # Reinstall the dependencies to ensure they install with the current version of node
-         - run: npm test
+         - run: npm test{[ if (isInjectingCoveralls) { ]}
+         - name: Coveralls
+           uses: coverallsapp/github-action@v1{[ } ]}

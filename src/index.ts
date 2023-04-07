@@ -43,15 +43,11 @@ const runCli = async (): Promise<void> => {
          type: Boolean,
          description: 'Installs a commitlint configuration file',
       },
-      {
-         name: 'message',
-         alias: 'm',
-         type: String,
-         description: 'Optional message for use with `--commit` to override the default commit message. For use with `--commit`',
-      },
    ];
 
-   const options = commandLineArgs(optionDefinitions);
+   const options = commandLineArgs(optionDefinitions, { stopAtFirstUnknown: true });
+
+   const argv = options._unknown || []
 
    if (options.upgrade) {
       await upgrade();
@@ -66,7 +62,31 @@ const runCli = async (): Promise<void> => {
    }
 
    if (options['github-actions']) {
-      await configureGithubActions();
+      const githubActionsOptionsDefs: OptionDefinitionWithDescription[] = [
+         {
+            name: 'with-coveralls',
+            type: Boolean,
+            description: 'Injects supports for Coveralls into the GitHub Actions config',
+         },
+         {
+            name: 'commit',
+            type: Boolean,
+            description: 'Commits the result for you',
+         },
+         {
+            name: 'help',
+            type: Boolean,
+         },
+      ];
+
+      const githubActionsOptions = commandLineArgs(githubActionsOptionsDefs, { argv, stopAtFirstUnknown: true });
+
+      if (githubActionsOptions.help) {
+         help(githubActionsOptionsDefs);
+         return;
+      }
+
+      await configureGithubActions(githubActionsOptions);
    }
 
    if (options.commitlint) {
