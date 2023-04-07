@@ -7,10 +7,5 @@ export const executeCommand = async (command: string): Promise<{
 }> => {
    const exec = util.promisify(childProcess.exec);
 
-   try {
-      return await exec(command);
-   } catch(e) {
-      console.error(e);
-      throw new Error(`Error executing ${command}`);
-   }
+   return await exec(command, { cwd: process.cwd() });
 };
