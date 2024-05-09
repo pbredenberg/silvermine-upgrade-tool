@@ -46,13 +46,18 @@ export const REPLACEMENT_TARGET_FILE_CONFIGS: ReplaceInFileConfig[] = [
       to: CURRENT_NPM_VERSION,
    },
    {
+      files: [ '.github/workflows/ci.yml' ],
+      from: new RegExp(`${NPM_VERSION_REGEX_MATCH_STRING}`, 'g'),
+      to: CURRENT_NPM_VERSION,
+   },
+   {
       files: [ '.travis.yml' ],
-      from: new RegExp('grunt standards', 'g'),
+      from: /grunt standards/g,
       to: 'npm run standards',
    },
    {
       files: [ '.gitlab-ci.yml' ],
-      from: new RegExp('grunt standards', 'g'),
+      from: /grunt standards/g,
       to: 'npm run standards',
    },
 ];
