@@ -1,19 +1,19 @@
-import path from "path";
-import writeFile from "../utilities/write-file-contents";
-import {getFileContents} from "../utilities/get-file-contents";
-import fs from "fs";
-import commandLineArgs from "command-line-args";
-import {executeCommand} from "../utilities/execute-command";
-import isFile from "../utilities/is-file";
+import path from 'path';
+import writeFile from '../utilities/write-file-contents';
+import { getFileContents } from '../utilities/get-file-contents';
+import fs from 'fs';
+import commandLineArgs from 'command-line-args';
+import { executeCommand } from '../utilities/execute-command';
+import isFile from '../utilities/is-file';
 import _ from 'underscore';
 
-const configureGithubActions = async (options:  commandLineArgs.CommandLineOptions): Promise<void> => {
+const configureGithubActions = async (options: commandLineArgs.CommandLineOptions): Promise<void> => {
    const cwd = process.cwd(),
-      targetDirectory = '.github/workflows',
-      targetFileName = 'ci.yml',
-      targetFilePath = `${targetDirectory}/${targetFileName}`,
-      targetDirectoryPath = path.resolve(cwd, targetDirectory),
-      isInjectingCoveralls = options['with-coveralls'];
+         targetDirectory = '.github/workflows',
+         targetFileName = 'ci.yml',
+         targetFilePath = `${targetDirectory}/${targetFileName}`,
+         targetDirectoryPath = path.resolve(cwd, targetDirectory),
+         isInjectingCoveralls = options['with-coveralls'];
 
    let templateFile: string,
        compiledTemplate: _.CompiledTemplate;
@@ -32,12 +32,12 @@ const configureGithubActions = async (options:  commandLineArgs.CommandLineOptio
    }
 
    try {
-      await fs.promises.mkdir(targetDirectoryPath, { recursive: true })
-   } catch (e) {
-     console.error(`Could not create directory tree ${targetDirectoryPath}`, e);
+      await fs.promises.mkdir(targetDirectoryPath, { recursive: true });
+   } catch(e) {
+      console.error(`Could not create directory tree ${targetDirectoryPath}`, e);
    }
 
-   console.log(`with coveralls: ${isInjectingCoveralls}`)
+   console.log(`with coveralls: ${isInjectingCoveralls}`);
 
    await writeFile(
       targetFilePath,
@@ -48,14 +48,20 @@ const configureGithubActions = async (options:  commandLineArgs.CommandLineOptio
    if (options.commit) {
       try {
          const result = await executeCommand(`git add ./${targetFilePath}`);
+
          console.log(result);
-      } catch (_) {}
+      } catch(_e) {
+         //
+      }
 
       try {
-         const result = await executeCommand(`git commit -m "ci: add GitHub Actions configuration"`);
+         const result = await executeCommand('git commit -m "ci: add GitHub Actions configuration"');
+
          console.log(result);
-      } catch (_) {}
+      } catch(_e) {
+         //
+      }
    }
-}
+};
 
 export default configureGithubActions;

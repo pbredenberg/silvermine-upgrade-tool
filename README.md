@@ -18,13 +18,24 @@ Since most of our projects contain configuration that is virtually identical, we
 of these projects by providing utility scripts and file templates that make it less manual and cumbersome
 to upgrade common software versions.
 
-## Development Notes
+## How?
 
 This tool is most useful when install globally, as it is designed to perform operations across
-multiples projects. When working on this tool, you can install the local development version
+multiple projects. When working on this tool, you can install the local development version
 globally as follows:
 
 `npm i -g .`
+
+NOTE: this tool needs to be installed in *both* the target version of Node.js we are
+moving to, *and* the *previous* version of Node.js we are moving away from.
+
+From the root of a project you wish to upgrade, using the version of Node.js you are
+upgrading *from*, run `silvermine-upgrade --upgrade`.
+
+When the process completes, run `nvm use` and `npm install` so that the project
+lockfile will be updated correctly.
+
+## Development Notes
 
 When changes are made to the package, you may at times want to clean the globally installed
 development copy. Do so with:

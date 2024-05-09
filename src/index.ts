@@ -6,7 +6,7 @@ import upgrade from './options/upgrade';
 import installStandardization from './options/install-standardization';
 import configureMarkdownlint from './options/configure-markdownlint';
 import configureCommitlint from './options/configure-commitlint';
-import configureGithubActions from "./options/configure-github-actions";
+import configureGithubActions from './options/configure-github-actions';
 
 const runCli = async (): Promise<void> => {
    const optionDefinitions: OptionDefinitionWithDescription[] = [
@@ -47,7 +47,7 @@ const runCli = async (): Promise<void> => {
 
    const options = commandLineArgs(optionDefinitions, { stopAtFirstUnknown: true });
 
-   const argv = options._unknown || []
+   const argv = options._unknown || [];
 
    if (options.upgrade) {
       await upgrade();
@@ -100,5 +100,4 @@ const runCli = async (): Promise<void> => {
 
 (async () => {
    await runCli();
-})()
-
+})();
