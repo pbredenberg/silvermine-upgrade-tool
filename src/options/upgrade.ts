@@ -9,18 +9,26 @@ const upgrade = async (): Promise<void> => {
    const rm = promisify(fs.unlink);
 
    await Promise.all(REPLACEMENT_TARGET_FILE_CONFIGS.map(async (config) => {
-      try {
-         const filePaths = (config.files as string[]).map((file) => {
-            return `${process.cwd()}/${file}`;
-         });
+      const filePaths = (config.files as string[]).map((file) => {
+         return `${process.cwd()}/${file}`;
+      });
 
-         const filesAtPaths = await getFilesAtPaths(filePaths);
+      let filesAtPaths: string[] = [];
+
+      try {
+         filesAtPaths = await getFilesAtPaths(filePaths);
+
+         console.log(`filesAtPaths: ${filesAtPaths}`);
 
          if (filesAtPaths.length <= 0) {
             console.log(`Files not found: ${config.files}`);
             return;
          }
+      } catch(e) {
+         console.error(e);
+      }
 
+      try {
          let options: ReplaceInFileConfig;
 
          options = {
@@ -34,9 +42,8 @@ const upgrade = async (): Promise<void> => {
          console.log(`Replacing: '${options.from}' => ${options.to}`);
          await replaceInFile(options);
          console.log(`Replaced: '${options.from}' => ${options.to}`);
-      } catch(e) {
-         console.error(e);
-         throw new Error('Error running file replacements');
+      } catch(_e) {
+         //
       }
    }));
 

@@ -10,8 +10,8 @@ const isFile = async (filePath: string): Promise<boolean> => {
    // Check for the existence of the file.
    try {
       result = await stat(filePath);
-   } catch(_) {
-      //
+   } catch(_e) {
+      console.log('File does not exist', filePath);
    }
 
    return !!result;
