@@ -16,6 +16,7 @@ jobs:
                node-version-file: '.nvmrc'
          - run: npm i -g npm@10.5.0
          - run: npm ci
+         - run: npm run check-node-version
          - run: npm run standards
    test:
       needs: [ build ]
