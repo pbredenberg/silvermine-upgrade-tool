@@ -20,6 +20,8 @@ to upgrade common software versions.
 
 ## How?
 
+Inspect all options available with: `silvermine-upgrade --help`
+
 This tool is most useful when install globally, as it is designed to perform operations across
 multiple projects. When working on this tool, you can install the local development version
 globally as follows:
@@ -34,6 +36,9 @@ upgrading *from*, run `silvermine-upgrade --upgrade`.
 
 When the process completes, run `nvm use` and `npm install` so that the project
 lockfile will be updated correctly.
+
+NOTE: Modification of GitHub Actions CI configuration is handled through straight
+file replacement. For this, run: `silvermine-upgrade --github-actions --force`
 
 ## Development Notes
 
