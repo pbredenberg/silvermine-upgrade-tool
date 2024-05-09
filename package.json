@@ -9,8 +9,10 @@
       "silvermine-upgrade": "./dist/commonjs/index.js"
    },
    "scripts": {
-      "prepare": "grunt build",
-      "test": "check-node-version --npm 10.5.0 && TS_NODE_PROJECT='tests/tsconfig.json' TS_NODE_FILES=true nyc mocha --opts ./.mocha.opts",
+      "build": "grunt build",
+      "prepare": "npm run build",
+      "test": "TS_NODE_PROJECT='tests/tsconfig.json' TS_NODE_FILES=true nyc mocha --opts ./.mocha.opts",
+      "check-node-version": "check-node-version --npm 10.5.0",
       "test:ci": "npm test -- --forbid-only",
       "release:preview": "node ./scripts/release.js preview",
       "release:prep-changelog": "node ./scripts/release.js prep-changelog",
