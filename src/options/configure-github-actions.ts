@@ -6,9 +6,11 @@ import commandLineArgs from 'command-line-args';
 import { executeCommand } from '../utilities/execute-command';
 import isFile from '../utilities/is-file';
 import _ from 'underscore';
+import { promisify } from 'util';
 
 const configureGithubActions = async (options: commandLineArgs.CommandLineOptions): Promise<void> => {
    const cwd = process.cwd(),
+         rm = promisify(fs.unlink),
          targetDirectory = '.github/workflows',
          targetFileName = 'ci.yml',
          targetFilePath = `${targetDirectory}/${targetFileName}`,
@@ -26,7 +28,16 @@ const configureGithubActions = async (options: commandLineArgs.CommandLineOption
 
    console.log(`configuring ${targetDirectoryPath}...`);
 
-   if (await isFile(targetFilePath)) {
+   if (options.force) {
+      try {
+         await rm(targetFilePath);
+         console.log('Removing with --force:', targetFilePath);
+      } catch(_e) {
+         console.error('Could not remove', targetFilePath);
+      }
+   }
+
+   if (!options.force && await isFile(targetFilePath)) {
       console.log(`${targetFilePath} already exists. So I guess that means I can knock off early!`);
       return;
    }
@@ -37,7 +48,7 @@ const configureGithubActions = async (options: commandLineArgs.CommandLineOption
       console.error(`Could not create directory tree ${targetDirectoryPath}`, e);
    }
 
-   console.log(`with coveralls: ${isInjectingCoveralls}`);
+   console.log(`with coveralls: ${!!isInjectingCoveralls}`);
 
    await writeFile(
       targetFilePath,
