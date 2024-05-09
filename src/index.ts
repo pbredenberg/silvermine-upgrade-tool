@@ -74,6 +74,11 @@ const runCli = async (): Promise<void> => {
             description: 'Commits the result for you',
          },
          {
+            name: 'force',
+            type: Boolean,
+            description: 'Removes the existing file before replacing',
+         },
+         {
             name: 'help',
             type: Boolean,
          },
@@ -81,7 +86,7 @@ const runCli = async (): Promise<void> => {
 
       const githubActionsOptions = commandLineArgs(githubActionsOptionsDefs, { argv, stopAtFirstUnknown: true });
 
-      if (githubActionsOptions.help) {
+      if (options.help) {
          help(githubActionsOptionsDefs);
          return;
       }
